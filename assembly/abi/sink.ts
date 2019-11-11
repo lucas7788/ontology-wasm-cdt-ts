@@ -57,11 +57,15 @@ export class Sink {
     }
 
     write_h256(hash:H256) :void {
-        this.val += util.bytesToHexString(hash.value.buffer);
+        this.val += util.bytesToHexString(hash.value);
     }
 
     toUint8Array():Uint8Array {
         let buffer = util.hexStringToArrayBuffer(this.val);
+        // let res = new Uint8Array(buffer.byteLength);
+        // let t = changetype<usize>(buffer);
+        // memory.copy(res.dataStart, t, buffer.byteLength);
+        // return res;
         return Uint8Array.wrap(buffer,0,buffer.byteLength) as Uint8Array;
     }
 }

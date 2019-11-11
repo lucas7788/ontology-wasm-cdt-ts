@@ -129,6 +129,6 @@ export class Source {
 
     read_h256() :H256 {
         let buffer = this.readBytes(32);
-        return new H256(Uint8Array.wrap(buffer) as Uint8Array);
+        return new H256(buffer);
     }
 }

@@ -35,13 +35,16 @@ describe("sink",()=>{
     // let source = new Source(buffer);
     // log(source.readUint64());
 
-    let buffer2 = util.hexStringToArrayBuffer('44f32454ea02190893e5608782abf7dfbf141b8682952730a4f31c64646cea17');
-    let hash = new H256(Uint8Array.wrap(buffer2) as Uint8Array);
+    let buffer2 = util.hexStringToArrayBuffer('5ba8bac907e1172b55fccaf454f2d3e28dfb681ee3c7ae0e38f999914007da34');
+    log(buffer2);
     let sink = new Sink();
-    log(hash.value.buffer);
-    // sink.write_h256(hash); 
-    // let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
-    // log(util.bytesToHexString(source2.read_h256().value.buffer))
+    let hash:H256 = new H256(buffer2);
+    log(hash.value);
+    sink.write_h256(hash);
+    log(sink.val);
+    log(sink.toUint8Array()); 
+    let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
+    log(util.bytesToHexString(source2.read_h256().value))
   });
 
   it("should be 1", () => {
