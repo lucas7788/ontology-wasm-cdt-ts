@@ -22,7 +22,7 @@ export class Source {
      * Reads some bytes.
      * @param {number} bytes - Number of bytes to read
      */
-    read(bytes: u64):ArrayBuffer{
+    readBytes(bytes: u64):ArrayBuffer{
         if (this.isEmpty()) {
             throw new Error('StringReader reached the end.');
         }
@@ -47,12 +47,12 @@ export class Source {
     /**
      * First, read one byte as the length of bytes to read. Then read the following bytes.
      */
-    readBytes():ArrayBuffer {
+    readVarBytes():ArrayBuffer {
         let bytesToRead = this.readVarUint();
         if (bytesToRead === 0) {
             return new ArrayBuffer(0);
         }
-        return this.read(bytesToRead);
+        return this.readBytes(bytesToRead);
     }
 
     /**
@@ -118,17 +118,17 @@ export class Source {
     }
 
     readString():string {
-        let buffer = this.readBytes();
+        let buffer = this.readVarBytes();
         return util.bytesToString(buffer);
     }
 
     read_address() :Address {
-        let buffer = this.read(20);
+        let buffer = this.readBytes(20);
         return new Address(Uint8Array.wrap(buffer) as Uint8Array);
     }
 
     read_h256() :H256 {
-        let buffer = this.read(32);
-        return new Address(Uint8Array.wrap(buffer) as Uint8Array);
+        let buffer = this.readBytes(32);
+        return new H256(Uint8Array.wrap(buffer) as Uint8Array);
     }
 }

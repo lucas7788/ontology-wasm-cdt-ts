@@ -1,6 +1,7 @@
 import {Sink} from "../abi/sink";
 import {util} from "../utils";
 import { Source } from "../abi/source";
+import { H256 } from "../types";
 
 
 describe("sink",()=>{
@@ -30,9 +31,17 @@ describe("sink",()=>{
     // log(source.readUint16());
     // log(source.readByte());
 
-    let buffer = util.hexStringToArrayBuffer('02c8365b00000000');
-    let source = new Source(buffer);
-    log(source.readUint64());
+    // let buffer = util.hexStringToArrayBuffer('02c8365b00000000');
+    // let source = new Source(buffer);
+    // log(source.readUint64());
+
+    let buffer2 = util.hexStringToArrayBuffer('44f32454ea02190893e5608782abf7dfbf141b8682952730a4f31c64646cea17');
+    let hash = new H256(Uint8Array.wrap(buffer2) as Uint8Array);
+    let sink = new Sink();
+    log(hash.value.buffer);
+    // sink.write_h256(hash); 
+    // let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
+    // log(util.bytesToHexString(source2.read_h256().value.buffer))
   });
 
   it("should be 1", () => {

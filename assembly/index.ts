@@ -22,7 +22,7 @@ export function invoke():void {
     } else if (method == 'current_tx_hash') {
         let hash = runtime_api.current_tx_hash();
         sink.write_h256(hash);
-    } else if (method == 'current_tx_hash') {
+    } else if (method == 'entry_address') {
         let addr = runtime_api.entry_address();
         sink.write_address(addr);
     } else {

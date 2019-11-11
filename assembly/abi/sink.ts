@@ -15,7 +15,7 @@ export class Sink {
         this.val += util.bytesToHexString(buffer);
     }
 
-    write_bytes(params:Uint8Array) :void{
+    write_bytes(params:ArrayBuffer) :void{
         this.val += util.bytesToHexString(params);
     }
 
