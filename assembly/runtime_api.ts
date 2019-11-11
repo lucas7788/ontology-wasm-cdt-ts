@@ -1,0 +1,282 @@
+import {Address} from "./address";
+import {H256} from "./types";
+export declare namespace env{
+
+     // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_timestamp")
+    export function ontio_timestamp(): u64;
+
+     // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_block_height")
+    export function ontio_block_height(): u32;
+
+
+     // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_self_address")
+    export function ontio_self_address(dst:usize): void;
+
+
+     // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_caller_address")
+    export function ontio_caller_address(dst:usize): void;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_entry_address")
+    export function ontio_entry_address(dst:usize): void;
+
+
+     // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_check_witness")
+    export function ontio_check_witness(addr:usize): u32;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_get_input")
+    export function ontio_get_input(dst_ptr: u8): void;
+
+   // #############
+   // # Registers #
+   // #############
+   //@ts-ignore
+   @external("env", "ontio_input_length")
+   export function ontio_input_length(): u32;
+
+   // #############
+   // # Registers #
+   // #############
+   //@ts-ignore
+   @external("env", "ontio_return")
+   export function ontio_return(ptr:usize, len:usize):void;
+
+
+   // #############
+   // # Registers #
+   // #############
+   //@ts-ignore
+   @external("env", "ontio_panic")
+   export function ontio_panic(ptr:usize, len:usize):void;
+
+
+   // #############
+   // # Registers #
+   // #############
+   //@ts-ignore
+   @external("env", "ontio_notify")
+   export function ontio_notify(ptr:usize, len:u32):void;
+
+
+   // #############
+   // # Registers #
+   // #############
+   //@ts-ignore
+   @external("env", "ontio_call_contract")
+   export function ontio_call_contract(addr:u8,input_ptr:u8, input_len:u8):i32;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_call_output_length")
+    export function ontio_call_output_length(): u32;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_get_call_output")
+    export function ontio_get_call_output(dst_ptr: usize): void;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_current_blockhash")
+    export function ontio_current_blockhash(block_hash: usize): u32;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_current_txhash")
+    export function ontio_current_txhash(block_hash: usize): u32;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_contract_migrate")
+    export function ontio_contract_migrate(code: usize,code_len:u32,vm_type:u32,name_ptr:usize,
+        name_len:u32,ver_ptr:usize,ver_len:u32,author_ptr:usize,author_len:u32,
+        email_ptr:usize,email_len:u32,desc_ptr:usize,desc_len:u32,new_addr_ptr:usize): i32;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_storage_read")
+    export function ontio_storage_read(key: usize,klen:u32,val:usize,vlen:u32,offset:u32): u32;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_storage_write")
+    export function ontio_storage_write(key: usize,klen:u32,val:usize,vlen:u32): void;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_storage_delete")
+    export function ontio_storage_delete(key: usize,klen:u32): void;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_sha256")
+    export function ontio_sha256(data: usize,len:u32,val:usize): void;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_contract_create")
+    export function ontio_contract_create(code_ptr: usize,code_len:u32,need_storage:u32,name_ptr:usize,
+        name_len:u32,ver_ptr:usize,ver_len:u32,author_ptr:usize,author_len:u32,email_ptr:usize,email_len:u32,
+        desc_ptr:usize,desc_len:u32,new_addr_ptr:usize): u32;
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_contract_delete")
+    export function ontio_contract_delete(): void;
+}
+
+export namespace runtime_api {
+    export function contract_delete():void {
+        env.ontio_contract_delete();
+    }
+    export function storage_write(key:Uint8Array, val:Uint8Array):void {
+        env.ontio_storage_write(key.dataStart,key.length, val.dataStart,val.length);
+    }
+    
+    export function storage_delete(key:Uint8Array):void {
+        env.ontio_storage_delete(key.dataStart, key.length);
+    }
+    
+    export function storage_read(key:Uint8Array):Uint8Array {
+        const INITIAL: usize = 32;
+        let val = new Uint8Array(INITIAL);
+        let size = env.ontio_storage_read(key.dataStart, key.length,val.dataStart,val.length as u32, 0);
+        if (size == u32.MAX_VALUE) {
+            return new Uint8Array(0);
+        }
+        let size_val = size as usize;
+        if (size_val > INITIAL) {
+            let res = new Uint8Array(size_val-INITIAL);
+            env.ontio_storage_read(key.dataStart, key.length,res.dataStart,res.length as u32, INITIAL as u32);
+            return res;
+        }
+        return val;
+    }
+    
+    export function timestamp():u64 {
+        return env.ontio_timestamp();
+    }
+    export function block_height() :u32 {
+        return env.ontio_block_height();
+    }
+    
+    export function address() :Address{
+        let res = new Uint8Array(20);
+        env.ontio_self_address(res.dataStart);
+        return new Address(res);
+    }
+    
+    export function caller() :Address {
+        let res = new Uint8Array(20);
+        env.ontio_caller_address(res.dataStart);
+        return new Address(res);
+    }
+    
+    export function entry_address():Address {
+        let res = new Uint8Array(20);
+        env.ontio_entry_address(res.dataStart as u8);
+        return new Address(res);
+    }
+    
+    export function current_block_hash():H256 {
+        let res = new Uint8Array(32);
+        env.ontio_current_blockhash(res.dataStart);
+        return new H256(res);
+    }
+    
+    export function current_tx_hash():H256 {
+        let res = new Uint8Array(32);
+        env.ontio_current_txhash(res.dataStart as u8);
+        return new H256(res);
+    }
+    
+    export function sha256(data: Uint8Array) :H256 {
+        let res = new Uint8Array(32);
+        env.ontio_sha256(data.dataStart, data.length, res.dataStart);
+        return new H256(res);
+    }
+    
+    export function check_witness(addr: Address) :bool {
+        return env.ontio_check_witness(addr.value.dataStart) == 0;
+    }
+    
+    export function input(): Uint8Array{
+        const len = env.ontio_input_length();
+        if (len == 0) {
+            return new Uint8Array(0);
+        } else {
+            const data = new Uint8Array(len as i32);
+            env.ontio_get_input(data.dataStart as u8);
+            return data
+        }
+    }
+    
+    export function ret(data: Uint8Array) :void {
+        env.ontio_return(data.dataStart as u8, data.length as u8);
+    }
+    
+    
+    export function notify(data:Uint8Array):void {
+        env.ontio_notify(data.dataStart, data.length as u32);
+    }
+    
+    export function panic(msg:Uint8Array):void {
+        env.ontio_panic(msg.dataStart,msg.length);
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "ontio-ts-cdt",
+  "version": "0.5.1",
+  "description": "Near smart contract runtime library for typescript",
+  "repository": {
+    "type": "git",
+    "url": "git@:nearprotocol/ontio-ts-cdt.git"
+  },
+  "main": "index.js",
+  "types": "assembly/index.ts",
+  "ascMain": "assembly/index.ts",
+  "scripts": {
+    "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug --use abort=",
+    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize --use abort=",
+    "doc": "rm -rf apidoc && mkdir apidoc && node_modules/.bin/typedoc assembly/*.ts assembly/collections/*.ts --theme markdown --ignoreCompilerErrors --excludePrivate --excludeProtected --excludeExternals --out apidoc/",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "test": "./node_modules/mocha/bin/mocha --reporter spec --require ts-node/register assembly/test/*.test.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "base-58": "^0.0.1",
+    "assemblyscript-json": "^0.2.0",
+    "bignum": "github:MaxGraey/bignum.wasm"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "ts-node": "^8.4.1",
+    "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^1.2.1",
+    "typescript": "^3.7.2"
+  }
+}
