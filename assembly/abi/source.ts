@@ -1,6 +1,6 @@
 import { util } from "../utils";
-import { Address } from "../address";
-import {H256} from "../types";
+import {H256, Address} from "../types";
+import {u128} from "bignum";
 export class Source {
     dataView: DataView;
     pos: i32;
@@ -130,5 +130,11 @@ export class Source {
     read_h256() :H256 {
         let buffer = this.readBytes(32);
         return new H256(buffer);
+    }
+
+    read_u128():u128 {
+        let buffer = this.readBytes(16);
+        let u = Uint8Array.wrap(buffer);
+        return u128.fromUint8ArrayLE(u as Uint8Array);
     }
 }

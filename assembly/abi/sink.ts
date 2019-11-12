@@ -1,7 +1,7 @@
 const DEFAULT_SIZE = 32;
 import {util} from "../utils";
-import { Address } from "../address";
-import {H256} from "../types";
+import {H256,Address} from "../types";
+import {u128} from "bignum";
 export class Sink {
     val: string;
     constructor(){
@@ -58,6 +58,10 @@ export class Sink {
 
     write_h256(hash:H256) :void {
         this.val += util.bytesToHexString(hash.value);
+    }
+    write_u128(data:u128):void {
+        let buffer = data.toUint8Array();
+        this.val += util.bytesToHexString(buffer.buffer);
     }
 
     toUint8Array():Uint8Array {

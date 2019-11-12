@@ -1,12 +1,27 @@
 import {Sink} from "../abi/sink";
 import {util} from "../utils";
 import { Source } from "../abi/source";
-import { H256 } from "../types";
+import { H256, Address } from "../types";
+import { sin } from "bindings/Math";
+import {u128} from "bignum";
 
 
 describe("sink",()=>{
-  it("should be 1", () => {
-    // let sink = new Sink();
+
+  it("address test", () => {
+    // let addr = decodeBase58('AbtTQJYKfQxq4UdygDsbLVjE8uRrJ2H3tP');
+    // log(addr);
+    // let buffer = util.hexStringToArrayBuffer('dca1305cc8fc2b3d3127a2c4849b43301545d84e');
+    // let addr = new Address(Uint8Array.wrap(buffer) as Uint8Array);
+    // log(addr.to_base58());
+    // //AbtTQJYKfQxq4UdygDsbLVjE8uRrJ2H3tP
+    // let buffer2 = util.hexStringToArrayBuffer('4ed8451530439b84c4a227313d2bfcc85c30a1dc');
+    // let addr2 = new Address(Uint8Array.wrap(buffer2) as Uint8Array);
+    // log(addr2.to_base58());
+  });
+
+  it("sink test", () => {
+    let sink = new Sink();
     // sink.write_u32(254 as u32);
     // expect<string>(sink.val).toBe("fe000000", "both strings are equal");
     // log<string>(sink.val); // strings!
@@ -14,6 +29,13 @@ describe("sink",()=>{
     // log(u);
     // let d = new DataView(u);
     // log(d.getUint32(0, true));
+    let d = u128.fromI32(10) as u128;
+    log(d);
+    sink.write_u128(d);
+    log(sink.val);
+    let t = util.hexStringToArrayBuffer(sink.val);
+    let source = new Source(t);
+    log(source.read_u128());
   });
 
   it("should be 1 source", () => {
@@ -35,16 +57,16 @@ describe("sink",()=>{
     // let source = new Source(buffer);
     // log(source.readUint64());
 
-    let buffer2 = util.hexStringToArrayBuffer('5ba8bac907e1172b55fccaf454f2d3e28dfb681ee3c7ae0e38f999914007da34');
-    log(buffer2);
-    let sink = new Sink();
-    let hash:H256 = new H256(buffer2);
-    log(hash.value);
-    sink.write_h256(hash);
-    log(sink.val);
-    log(sink.toUint8Array()); 
-    let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
-    log(util.bytesToHexString(source2.read_h256().value))
+    // let buffer2 = util.hexStringToArrayBuffer('5ba8bac907e1172b55fccaf454f2d3e28dfb681ee3c7ae0e38f999914007da34');
+    // log(buffer2);
+    // let sink = new Sink();
+    // let hash:H256 = new H256(buffer2);
+    // log(hash.value);
+    // sink.write_h256(hash);
+    // log(sink.val);
+    // log(sink.toUint8Array()); 
+    // let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
+    // log(util.bytesToHexString(source2.read_h256().value))
   });
 
   it("should be 1", () => {
@@ -56,17 +78,10 @@ describe("sink",()=>{
     // log(d.getUint32(0,true));
   });
 
-  // it("should be 2", () => {
-  //   let buffer = new Uint8Array(4);
-  //   let da = new DataView(buffer as ArrayBuffer);
-  //   da.setUint32(0, 10 as u32, true);
-  //   log<ArrayBuffer>(buffer as ArrayBuffer); // bytes!
-
-  //   let a = buffer.slice(buffer.byteOffset, buffer.byteOffset+buffer.byteLength);
-  //   log<string>("data:"+String.UTF8.decode(a as ArrayBuffer, true)); // strings!
-  //   log<string>(util.bytesToString(buffer)); // strings!
-  // });
-});
+  it("sink test", () => {
+   let sink = new Sink();
+  
+  });
 
 // class Vec3 {
 //   constructor(
@@ -110,4 +125,4 @@ describe("sink",()=>{
 //     log<u64>(0xFFFFFFFF); // long values!
 //     log<ArrayBuffer>(new ArrayBuffer(50)); // bytes!
 //   });
-// });
+});
