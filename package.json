@@ -1,10 +1,10 @@
 {
   "name": "ontio-ts-cdt",
   "version": "0.5.1",
-  "description": "Near smart contract runtime library for typescript",
+  "description": "ontology smart contract runtime library for typescript",
   "repository": {
     "type": "git",
-    "url": "git@:nearprotocol/ontio-ts-cdt.git"
+    "url": "git@:ontology/ontio-ts-cdt.git"
   },
   "main": "index.js",
   "types": "assembly/index.ts",

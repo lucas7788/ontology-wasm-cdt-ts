@@ -1,5 +1,4 @@
-import {Address} from "./address";
-import {H256} from "./types";
+import {H256,Address} from "./types";
 export declare namespace env{
 
      // #############
@@ -83,7 +82,7 @@ export declare namespace env{
    // #############
    //@ts-ignore
    @external("env", "ontio_notify")
-   export function ontio_notify(ptr:u8, len:u32):void;
+   export function ontio_notify(ptr:u32, len:u32):void;
 
 
    // #############

@@ -15,6 +15,14 @@ export class Sink {
         this.val += util.bytesToHexString(buffer);
     }
 
+    write_bool(param:bool):void {
+        if (param) {
+            this.write_byte(1 as u8);
+        } else {
+            this.write_byte(0 as u8);
+        }
+    }
+
     write_bytes(params:ArrayBuffer) :void{
         this.val += util.bytesToHexString(params);
     }
@@ -70,6 +78,6 @@ export class Sink {
         // let t = changetype<usize>(buffer);
         // memory.copy(res.dataStart, t, buffer.byteLength);
         // return res;
-        return Uint8Array.wrap(buffer,0,buffer.byteLength) as Uint8Array;
+        return Uint8Array.wrap(buffer) as Uint8Array;
     }
 }

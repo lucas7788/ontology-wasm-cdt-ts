@@ -2,16 +2,19 @@
 export namespace util {
     
   const HEX :string[]= ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
-  export function stringToBytes(s: string): ArrayBuffer {
+  export function stringToArrayBuffer(s: string): ArrayBuffer {
     return String.UTF8.encode(s);
   }
 
   export function strToHexString(data: string): string {
-    let bytes = stringToBytes(data);
+    let bytes = stringToArrayBuffer(data);
     return bytesToHexString(bytes);
   }
 
   export function bytesToHexString(bytes:ArrayBuffer):string {
+    if (bytes.byteLength == 0) {
+      return '00';
+    }
     let dataView:DataView = new DataView(bytes);
     let res :string= '';
     for(let i=0;i<bytes.byteLength;i++){
@@ -130,7 +133,7 @@ export namespace util {
         }
       } else {
         //@ts-ignore v will have decode method
-        return decode<T>(stringToBytes(s));
+        return decode<T>(stringToArrayBuffer(s));
       }
     }
   }

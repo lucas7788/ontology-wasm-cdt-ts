@@ -113,8 +113,8 @@ export class Source {
         return res;
     }
 
-    readBoolean():bool{
-        return this.readUint8() !== 0;
+    readBool():bool{
+        return this.readUint8() != 0;
     }
 
     readString():string {

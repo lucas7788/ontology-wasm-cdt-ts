@@ -29,44 +29,45 @@ describe("sink",()=>{
     // log(u);
     // let d = new DataView(u);
     // log(d.getUint32(0, true));
-    let d = u128.fromI32(10) as u128;
-    log(d);
-    sink.write_u128(d);
-    log(sink.val);
-    let t = util.hexStringToArrayBuffer(sink.val);
-    let source = new Source(t);
-    log(source.read_u128());
+    // let d = u128.fromI32(10) as u128;
+    // log(d);
+    // sink.write_u128(d);
+    // log(sink.val);
+    // let t = util.hexStringToArrayBuffer(sink.val);
+    // let source = new Source(t);
+    // log(source.read_u128());
+  
   });
 
-  it("should be 1 source", () => {
-    // let sink = new Sink();
-    // sink.write_string('abc');
-    // log('abc:'+util.strToHexString('abc'));
-    // sink.write_u32(254);
-    // sink.write_u16(15);
-    // sink.write_byte(15);
-    // log(sink.toUint8Array());
-    // let buffer = util.hexStringToArrayBuffer(sink.val);
-    // let source = new Source(buffer);
-    // log('res:'+source.readString());
-    // log(source.readUint32());
-    // log(source.readUint16());
-    // log(source.readByte());
-
-    // let buffer = util.hexStringToArrayBuffer('02c8365b00000000');
-    // let source = new Source(buffer);
-    // log(source.readUint64());
-
-    // let buffer2 = util.hexStringToArrayBuffer('5ba8bac907e1172b55fccaf454f2d3e28dfb681ee3c7ae0e38f999914007da34');
-    // log(buffer2);
-    // let sink = new Sink();
-    // let hash:H256 = new H256(buffer2);
-    // log(hash.value);
-    // sink.write_h256(hash);
-    // log(sink.val);
-    // log(sink.toUint8Array()); 
-    // let source2 = new Source(util.hexStringToArrayBuffer(sink.val));
-    // log(util.bytesToHexString(source2.read_h256().value))
+  it("sink soucre test", () => {
+    let sink = new Sink();
+    sink.write_string('abc');
+    sink.write_u32(254 as u32);
+    sink.write_u16(254 as u16);
+    sink.write_byte(254 as u8);
+    sink.write_bool(true);
+    sink.write_u64(254);
+    sink.write_u128(u128.fromI32(254));
+    let addr = new Address(new Uint8Array(20));
+    sink.write_address(addr);
+    let bs = new Uint8Array(2);
+    bs[0] = 254;
+    bs[1] = 254;
+    sink.write_varuint(bs.byteLength);
+    sink.write_bytes(bs.buffer);
+    expect<string>('03616263fe000000fe00fe01fe00000000000000fe000000000000000000000000000000000000000000000000000000000000000000000002fefe').toStrictEqual(sink.val);
+    let buffer = util.hexStringToArrayBuffer(sink.val);
+    let source = new Source(buffer);
+    expect<string>('abc').toStrictEqual(source.readString());
+    expect<u32>(254).toStrictEqual(source.readUint32());
+    expect<u16>(254).toStrictEqual(source.readUint16());
+    expect<u8>(254).toStrictEqual(source.readByte());
+    expect<bool>(true).toStrictEqual(source.readBool());
+    expect<u64>(254).toStrictEqual(source.readUint64());
+    expect<u128>(u128.fromI32(254)).toStrictEqual(source.read_u128());
+    expect<Uint8Array>(addr.value).toStrictEqual(source.read_address().value);
+    expect<u64>(2).toStrictEqual(source.readVarUint());
+    expect<ArrayBuffer>(bs.buffer).toStrictEqual(source.readBytes(2));
   });
 
   it("should be 1", () => {
