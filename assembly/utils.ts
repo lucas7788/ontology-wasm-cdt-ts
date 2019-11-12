@@ -6,6 +6,11 @@ export namespace util {
     return String.UTF8.encode(s);
   }
 
+  export function stringToUint8Array(s: string): Uint8Array {
+    let buffer = String.UTF8.encode(s);
+    return Uint8Array.wrap(buffer) as Uint8Array;
+  }
+
   export function strToHexString(data: string): string {
     let bytes = stringToArrayBuffer(data);
     return bytesToHexString(bytes);

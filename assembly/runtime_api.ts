@@ -190,9 +190,6 @@ export declare namespace env{
 }
 
 export namespace runtime_api {
-    export function contract_delete():void {
-        env.ontio_contract_delete();
-    }
     export function storage_write(key:Uint8Array, val:Uint8Array):void {
         env.ontio_storage_write(key.dataStart as u32,key.length, val.dataStart as u32,val.length);
     }
@@ -299,4 +296,74 @@ export namespace runtime_api {
         let u = Uint8Array.wrap(buffer) as Uint8Array;
         env.ontio_debug(u.dataStart, u.byteLength);
     }
+
+    export function call_contract(addr: Address, input: Uint8Array):Uint8Array{
+        let res = env.ontio_call_contract(addr.value.dataStart,input.dataStart,input.byteLength);
+        if (res < 0) {
+            return new Uint8Array(0);
+        }
+        let size = env.ontio_call_output_length();
+        let output = new Uint8Array(size);
+        if (size != 0) {
+            env.ontio_get_call_output(output.dataStart);
+        }
+        return output;
+    }
+    export function contract_create(code:Uint8Array,need_storage:u32,name: string, ver: string, author: string, email: string, desc: &string) :Address {
+        let array: Uint8Array = new Uint8Array(20);
+        let nameU8Array = util.stringToUint8Array(name);
+        let verU8Array = util.stringToUint8Array(ver);
+        let authorU8Array = util.stringToUint8Array(author);
+        let emailU8Array = util.stringToUint8Array(email);
+        let descU8Array = util.stringToUint8Array(desc);
+        env.ontio_contract_create(
+            code.dataStart,
+            code.byteLength() as u32,
+            need_storage,
+            nameU8Array.dataStart,
+            nameU8Array.byteLength() as u32,
+            verU8Array.dataStart,
+            verU8Array.byteLength as u32,
+            authorU8Array.dataStart,
+            authorU8Array.byteLength as u32,
+            emailU8Array.dataStart,
+            emailU8Array.byteLength as u32,
+            descU8Array.dataStart,
+            descU8Array.byteOffset as u32,
+            array.dataStart,
+        );
+        return new Address(array);
+    }
+
+
+    export function contract_migrate(code:Uint8Array,vmType:u32,name: string, ver: string, author: string, email: string, desc: &string) :Address {
+        let array: Uint8Array = new Uint8Array(20);
+        let nameU8Array = util.stringToUint8Array(name);
+        let verU8Array = util.stringToUint8Array(ver);
+        let authorU8Array = util.stringToUint8Array(author);
+        let emailU8Array = util.stringToUint8Array(email);
+        let descU8Array = util.stringToUint8Array(desc);
+        env.ontio_contract_migrate(
+            code.dataStart,
+            code.byteLength() as u32,
+            vmType,
+            nameU8Array.dataStart,
+            nameU8Array.byteLength() as u32,
+            verU8Array.dataStart,
+            verU8Array.byteLength as u32,
+            authorU8Array.dataStart,
+            authorU8Array.byteLength as u32,
+            emailU8Array.dataStart,
+            emailU8Array.byteLength as u32,
+            descU8Array.dataStart,
+            descU8Array.byteOffset as u32,
+            array.dataStart,
+        );
+        return new Address(array);
+    }
+
+    export function contract_delete():void {
+        env.ontio_contract_delete();
+    }
 }
+
