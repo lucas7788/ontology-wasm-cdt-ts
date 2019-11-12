@@ -17,7 +17,6 @@ export function invoke():void {
         let val = Uint8Array.wrap(valueBuffer) as Uint8Array;
         database.put(Uint8Array.wrap(keyBuffer) as Uint8Array,val);
         sink.write_bool(true);
-        runtime_api.notify(val);
     } else if(method == 'get') {
         let key = reader.readString();
         let keyBuffer = util.stringToArrayBuffer(key);

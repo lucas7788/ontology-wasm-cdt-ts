@@ -80,8 +80,8 @@ describe("sink",()=>{
   });
 
   it("sink test", () => {
-   let sink = new Sink();
-  
+   let s = util.strToHexString('dmFsdWU=');
+   log(s);
   });
 
 // class Vec3 {

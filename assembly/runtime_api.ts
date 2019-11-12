@@ -1,4 +1,5 @@
 import {H256,Address} from "./types";
+import { util } from "./utils";
 export declare namespace env{
 
      // #############
@@ -178,6 +179,14 @@ export declare namespace env{
     //@ts-ignore
     @external("env", "ontio_contract_delete")
     export function ontio_contract_delete(): void;
+
+
+    // #############
+    // # Registers #
+    // #############
+    //@ts-ignore
+    @external("env", "ontio_debug")
+    export function ontio_debug(data:u32, len:u32): void;
 }
 
 export namespace runtime_api {
@@ -200,12 +209,18 @@ export namespace runtime_api {
             return new Uint8Array(0);
         }
         let size_val = size as usize;
+        debug('storage_read:'+size_val.toString());
         if (size_val > INITIAL) {
             let res = new Uint8Array(size_val-INITIAL);
             env.ontio_storage_read(key.dataStart as u32, key.length,res.dataStart as u32,res.length as u32, INITIAL as u32);
             return res;
+        } else {
+            let res = new Uint8Array(size_val);
+            for (let i=0;i<(size_val as i32);i++) {
+                res[i] = val[i];
+            }
+            return res;
         }
-        return val;
     }
     
     export function timestamp():u64 {
@@ -267,15 +282,21 @@ export namespace runtime_api {
     }
     
     export function ret(data: Uint8Array) :void {
-        env.ontio_return(data.dataStart as u32, data.length as u32);
+        env.ontio_return(data.dataStart as u32, data.byteLength as u32);
     }
     
     
     export function notify(data:Uint8Array):void {
-        env.ontio_notify(data.dataStart as u32, data.length as u32);
+        env.ontio_notify(data.dataStart as u32, data.byteLength as u32);
     }
     
     export function panic(msg:Uint8Array):void {
         env.ontio_panic(msg.dataStart as u32,msg.byteLength);
+    }
+
+    export function debug(msg:string):void{
+        let buffer = util.stringToArrayBuffer(msg);
+        let u = Uint8Array.wrap(buffer) as Uint8Array;
+        env.ontio_debug(u.dataStart, u.byteLength);
     }
 }

@@ -74,10 +74,6 @@ export class Sink {
 
     toUint8Array():Uint8Array {
         let buffer = util.hexStringToArrayBuffer(this.val);
-        // let res = new Uint8Array(buffer.byteLength);
-        // let t = changetype<usize>(buffer);
-        // memory.copy(res.dataStart, t, buffer.byteLength);
-        // return res;
         return Uint8Array.wrap(buffer) as Uint8Array;
     }
 }
