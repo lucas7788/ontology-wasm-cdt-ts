@@ -27,6 +27,9 @@ export function invoke():void {
         let keyBuffer = util.stringToArrayBuffer(key);
         database.del(Uint8Array.wrap(keyBuffer) as Uint8Array);
         sink.write_bool(true);
+    } else if (method == 'contractDelete') {
+        runtime_api.contract_destroy();
+        sink.write_bool(true);
     } else {
         sink.write_bool(false);
     }

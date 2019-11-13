@@ -177,8 +177,8 @@ export declare namespace env{
     // # Registers #
     // #############
     //@ts-ignore
-    @external("env", "ontio_contract_delete")
-    export function ontio_contract_delete(): void;
+    @external("env", "ontio_contract_destroy")
+    export function ontio_contract_destroy(): void;
 
 
     // #############
@@ -309,7 +309,7 @@ export namespace runtime_api {
         }
         return output;
     }
-    export function contract_create(code:Uint8Array,need_storage:u32,name: string, ver: string, author: string, email: string, desc: &string) :Address {
+    export function contract_create(code:Uint8Array,need_storage:u32,name: string, ver: string, author: string, email: string, desc: string) :Address {
         let array: Uint8Array = new Uint8Array(20);
         let nameU8Array = util.stringToUint8Array(name);
         let verU8Array = util.stringToUint8Array(ver);
@@ -336,7 +336,7 @@ export namespace runtime_api {
     }
 
 
-    export function contract_migrate(code:Uint8Array,vmType:u32,name: string, ver: string, author: string, email: string, desc: &string) :Address {
+    export function contract_migrate(code:Uint8Array,vmType:u32,name: string, ver: string, author: string, email: string, desc: string) :Address {
         let array: Uint8Array = new Uint8Array(20);
         let nameU8Array = util.stringToUint8Array(name);
         let verU8Array = util.stringToUint8Array(ver);
@@ -362,8 +362,8 @@ export namespace runtime_api {
         return new Address(array);
     }
 
-    export function contract_delete():void {
-        env.ontio_contract_delete();
+    export function contract_destroy():void {
+        env.ontio_contract_destroy();
     }
 }
 
