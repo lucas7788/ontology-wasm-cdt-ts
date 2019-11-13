@@ -91,7 +91,7 @@ export declare namespace env{
    // #############
    //@ts-ignore
    @external("env", "ontio_call_contract")
-   export function ontio_call_contract(addr:u8,input_ptr:u32, input_len:u32):i32;
+   export function ontio_call_contract(addr:u32,input_ptr:u32, input_len:u32):i32;
 
     // #############
     // # Registers #
@@ -298,7 +298,7 @@ export namespace runtime_api {
     }
 
     export function call_contract(addr: Address, input: Uint8Array):Uint8Array{
-        let res = env.ontio_call_contract(addr.value.dataStart,input.dataStart,input.byteLength);
+        let res = env.ontio_call_contract(addr.value.dataStart as u32,input.dataStart as u32,input.byteLength as u32);
         if (res < 0) {
             return new Uint8Array(0);
         }

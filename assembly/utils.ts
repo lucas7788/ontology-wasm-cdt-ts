@@ -1,9 +1,15 @@
+import { Address } from "./types";
 
 export namespace util {
     
   const HEX :string[]= ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
   export function stringToArrayBuffer(s: string): ArrayBuffer {
     return String.UTF8.encode(s);
+  }
+
+  export function hexToAddress(hex:string):Address {
+    let buffer = util.hexStringToArrayBuffer(hex);
+    return new Address(Uint8Array.wrap(buffer) as Uint8Array);
   }
 
   export function stringToUint8Array(s: string): Uint8Array {
