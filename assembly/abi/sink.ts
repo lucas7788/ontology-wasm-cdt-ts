@@ -60,8 +60,18 @@ export class Sink {
         }
     }
 
+    write_native_varuint(val:u64):void{
+        this.write_byte(varuint_encode_size(val));
+        this.write_varuint(val);
+    }
+
     write_address(addr:Address) :void {
         this.val += util.bytesToHexString(addr.value.buffer);
+    }
+
+    write_native_address(addr:Address):void {
+        this.write_byte(20);
+        this.write_address(addr);
     }
 
     write_h256(hash:H256) :void {
@@ -75,5 +85,17 @@ export class Sink {
     toUint8Array():Uint8Array {
         let buffer = util.hexStringToArrayBuffer(this.val);
         return Uint8Array.wrap(buffer) as Uint8Array;
+    }
+}
+
+function varuint_encode_size(val:u64):usize{
+    if (val <0xfd){
+        return 1;
+    } else if (val <= 0xffff) {
+        return 3;
+    } else if (val <=0xffffffff) {
+        return 5;
+    } else {
+        return 9;
     }
 }

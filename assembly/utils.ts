@@ -1,4 +1,5 @@
 import { Address } from "./types";
+import { u128 } from "bignum";
 
 export namespace util {
     
@@ -75,6 +76,50 @@ export namespace util {
     return res;
   }
 
+  export function u128FromNeoUint8Array(buf:Uint8Array):u128{
+    if (buf.byteLength == 0) {
+      return u128.fromI32(0);
+    }
+    let neg = buf[buf.byteLength-1] >= 0x80;
+    let default_val = u128.Max;
+    if (neg) {
+      default_val = u128.Min;
+    } 
+    let res = new Uint8Array(16);
+    if (((buf.byteLength > 16) && neg == true) || (buf.byteLength>17 && (neg == false))) {
+      return default_val;
+    }
+    if (buf.byteLength == 17 && buf[16] != 0){
+      return default_val;
+    }
+    let copy = buf.byteLength;
+    if (buf.byteLength > 16) {
+      copy = 16;
+    }
+  }
+  export function u128ToUint8Array(val:u128):Uint8Array {
+    let bs = val.toUint8Array(false);
+    let temp = new Uint8Array(bs.byteLength);
+    memory.copy(temp.dataStart,bs.dataStart,bs.byteLength);
+    temp = temp.reverse();
+    for (let i=0;i++;i<temp.byteLength) {
+      if (temp[i] != 0) {
+        let end = temp.byteLength - i;
+        if (bs[end-1] >= 0x80) {
+          let res = new Uint8Array(end+1);
+          memory.copy(res.dataStart,bs.dataStart,end);
+          res[end] = 0;
+          return res;
+        } else {
+          let res = new Uint8Array(end);
+          memory.copy(res.dataStart,bs.dataStart,end);
+          return res;
+        }
+        break;
+      }
+    }
+    return new Uint8Array(0);
+  }
   export function u64ToHexString(u:u64):string{
     let buffer:ArrayBuffer = new ArrayBuffer(8);
     let d:DataView = new DataView(buffer);

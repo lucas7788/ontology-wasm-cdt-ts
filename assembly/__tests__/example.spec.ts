@@ -18,10 +18,19 @@ describe("sink",()=>{
     // let buffer2 = util.hexStringToArrayBuffer('4ed8451530439b84c4a227313d2bfcc85c30a1dc');
     // let addr2 = new Address(Uint8Array.wrap(buffer2) as Uint8Array);
     // log(addr2.to_base58());
+    let u = new Uint8Array(10);
+    u[0] = 0;
+    u[1] = 1;
+    u[2] = 2;
+    u[3] = 3;
+    let r = new Uint8Array(2);
+    memory.copy(r.dataStart,u.dataStart+2,2);
+    log(u);
+    log(r);
   });
 
   it("sink test", () => {
-    let sink = new Sink();
+    // let sink = new Sink();
     // sink.write_u32(254 as u32);
     // expect<string>(sink.val).toBe("fe000000", "both strings are equal");
     // log<string>(sink.val); // strings!
@@ -80,8 +89,7 @@ describe("sink",()=>{
   });
 
   it("sink test", () => {
-   let s = util.strToHexString('dmFsdWU=');
-   log(s);
+
   });
 
 // class Vec3 {
