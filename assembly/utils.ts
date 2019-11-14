@@ -96,13 +96,24 @@ export namespace util {
     if (buf.byteLength > 16) {
       copy = 16;
     }
+    {
+      for (let i=0;i<copy;i++) {
+        res[i] = buf[i];
+      }
+      if(neg) {
+        for (let i=0;i<res.byteLength-copy;i++){
+          res[copy+i] = 255;
+        }
+      }
+    }
+    return u128.fromUint8ArrayLE(res);
   }
-  export function u128ToUint8Array(val:u128):Uint8Array {
+  export function u128ToNeoUint8Array(val:u128):Uint8Array {
     let bs = val.toUint8Array(false);
     let temp = new Uint8Array(bs.byteLength);
     memory.copy(temp.dataStart,bs.dataStart,bs.byteLength);
     temp = temp.reverse();
-    for (let i=0;i++;i<temp.byteLength) {
+    for (let i=0;i<temp.byteLength;i++) {
       if (temp[i] != 0) {
         let end = temp.byteLength - i;
         if (bs[end-1] >= 0x80) {
@@ -120,6 +131,7 @@ export namespace util {
     }
     return new Uint8Array(0);
   }
+
   export function u64ToHexString(u:u64):string{
     let buffer:ArrayBuffer = new ArrayBuffer(8);
     let d:DataView = new DataView(buffer);

@@ -88,7 +88,7 @@ export class Sink {
     }
 }
 
-function varuint_encode_size(val:u64):usize{
+function varuint_encode_size(val:u64):u8{
     if (val <0xfd){
         return 1;
     } else if (val <= 0xffff) {

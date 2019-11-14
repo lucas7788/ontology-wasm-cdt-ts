@@ -2,8 +2,9 @@ import {Sink} from "../abi/sink";
 import {util} from "../utils";
 import { Source } from "../abi/source";
 import { H256, Address } from "../types";
-import { sin } from "bindings/Math";
+import { sin, random } from "bindings/Math";
 import {u128} from "bignum";
+import { Notify } from "../notify";
 
 
 describe("sink",()=>{
@@ -18,34 +19,27 @@ describe("sink",()=>{
     // let buffer2 = util.hexStringToArrayBuffer('4ed8451530439b84c4a227313d2bfcc85c30a1dc');
     // let addr2 = new Address(Uint8Array.wrap(buffer2) as Uint8Array);
     // log(addr2.to_base58());
-    let u = new Uint8Array(10);
-    u[0] = 0;
-    u[1] = 1;
-    u[2] = 2;
-    u[3] = 3;
-    let r = new Uint8Array(2);
-    memory.copy(r.dataStart,u.dataStart+2,2);
-    log(u);
-    log(r);
+    let sink = new Sink();
+    let addr = util.hexToAddress('dca1305cc8fc2b3d3127a2c4849b43301545d84e');
+    sink.write_native_address(addr);
+    for (let i=0;i<100;i++){
+      let res = util.u128ToNeoUint8Array(u128.fromI32(i));
+      let u:u128 = util.u128FromNeoUint8Array(res);
+      expect<u128>(u128.fromI32(i)).toStrictEqual(u);
+    }
   });
 
-  it("sink test", () => {
-    // let sink = new Sink();
-    // sink.write_u32(254 as u32);
-    // expect<string>(sink.val).toBe("fe000000", "both strings are equal");
-    // log<string>(sink.val); // strings!
-    // let u = util.hexStringToArrayBuffer(sink.val);
-    // log(u);
-    // let d = new DataView(u);
-    // log(d.getUint32(0, true));
-    // let d = u128.fromI32(10) as u128;
-    // log(d);
-    // sink.write_u128(d);
-    // log(sink.val);
-    // let t = util.hexStringToArrayBuffer(sink.val);
-    // let source = new Source(t);
-    // log(source.read_u128());
-  
+  it("notify test", () => {
+    let notify = new Notify();
+    let addr = util.hexToAddress('dca1305cc8fc2b3d3127a2c4849b43301545d84e');
+    let bs = new Uint8Array(2);
+    bs[0] = 0;
+    bs[1] = 1;
+    let h = new Uint8Array(32);
+    h[0] = 1;
+    h[1] = 1;
+    let h256 = new H256(h.buffer);
+    notify.bool(true).string('test').address(addr).bytearray(bs).h256(h256).number(u128.fromI32(128)).notify();
   });
 
   it("sink soucre test", () => {
