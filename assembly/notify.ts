@@ -65,7 +65,6 @@ export class Notify {
         let val = this.sink.toUint8Array();
         let d = new DataView(val.buffer);
         d.setUint32(5,this.numEntry,true);
-        log(util.bytesToHexString(d.buffer));
-        // runtime_api.notify(Uint8Array.wrap(d.buffer) as Uint8Array);
+        runtime_api.notify(Uint8Array.wrap(d.buffer) as Uint8Array);
     }
 }
