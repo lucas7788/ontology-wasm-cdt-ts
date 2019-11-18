@@ -10,9 +10,9 @@ const DEFAULT_ARGS = [
       return asc;
     }
     try {
-      asc = require("near-assemblyscript/cli/asc");
+      asc = require("assemblyscript/cli/asc");
     } catch (e) {
-      asc= require("near-assemblyscript/dist/asc")
+      asc= require("assemblyscript/dist/asc")
       
     }
     asc.main = (main => (args, options, fn) => {
