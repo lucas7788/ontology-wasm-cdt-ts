@@ -1,8 +1,8 @@
-import {runtime_api} from "./runtime_api";
-import {Source} from "./abi/source";
-import {Sink} from "./abi/sink";
-import {database} from "./database";
-import { util } from "./utils";
+import {runtime_api} from "../runtime_api";
+import {Source} from "../abi/source";
+import {Sink} from "../abi/sink";
+import {database} from "../database";
+import { util } from "../utils";
 
 export function invoke():void {
     let data = runtime_api.input();
