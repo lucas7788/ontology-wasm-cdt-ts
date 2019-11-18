@@ -75,7 +75,7 @@ export declare namespace env{
    // #############
    //@ts-ignore
    @external("env", "ontio_panic")
-   export function ontio_panic(ptr:u8, len:u32):void;
+   export function ontio_panic(ptr:u32, len:u32):void;
 
 
    // #############
@@ -318,10 +318,10 @@ export namespace runtime_api {
         let descU8Array = util.stringToUint8Array(desc);
         env.ontio_contract_create(
             code.dataStart,
-            code.byteLength() as u32,
+            code.byteLength as u32,
             need_storage,
             nameU8Array.dataStart,
-            nameU8Array.byteLength() as u32,
+            nameU8Array.byteLength as u32,
             verU8Array.dataStart,
             verU8Array.byteLength as u32,
             authorU8Array.dataStart,
@@ -345,10 +345,10 @@ export namespace runtime_api {
         let descU8Array = util.stringToUint8Array(desc);
         env.ontio_contract_migrate(
             code.dataStart,
-            code.byteLength() as u32,
+            code.byteLength as u32,
             vmType,
             nameU8Array.dataStart,
-            nameU8Array.byteLength() as u32,
+            nameU8Array.byteLength as u32,
             verU8Array.dataStart,
             verU8Array.byteLength as u32,
             authorU8Array.dataStart,

@@ -1,20 +1,27 @@
 {
   "name": "ontio-ts-cdt",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "ontology smart contract runtime library for typescript",
   "repository": {
     "type": "git",
     "url": "git@:ontology/ontio-ts-cdt.git"
   },
-  "main": "index.js",
-  "types": "assembly/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "ascMain": "assembly/index.ts",
   "scripts": {
-    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
+    "asbuild:optimized": "asc assembly/examples/ont_test.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
     "doc": "rm -rf apidoc && mkdir apidoc && node_modules/.bin/typedoc assembly/*.ts --theme markdown --ignoreCompilerErrors --excludePrivate --excludeProtected --excludeExternals --out apidoc/",
     "asbuild": "npm run asbuild:optimized",
-    "test": "./node_modules/mocha/bin/mocha --reporter spec --require ts-node/register assembly/test/*.test.ts"
+    "test": "./node_modules/mocha/bin/mocha --reporter spec --require ts-node/register assembly/test/*.test.ts",
+    "release": "asc && npm publish"
   },
+  "keywords": [
+    "ontology",
+    "wasm",
+    "typescript",
+    "assemblyscript"
+],
   "author": "",
   "license": "MIT",
   "dependencies": {

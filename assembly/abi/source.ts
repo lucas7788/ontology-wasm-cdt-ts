@@ -31,15 +31,6 @@ export class Source {
         return res;
     }
 
-    unreadBytes(bytes: u64) :void{
-        if ((this.pos + bytes) >= this.size) {
-            throw new Error('Can not unread too many bytes.');
-        }
-        this.pos -= bytes;
-        return;
-    }
-
-
     readByte():u8 {
         return this.readUint8();
     }
