@@ -2,7 +2,6 @@ import {Sink} from "../abi/sink";
 import {util} from "../utils";
 import { Source } from "../abi/source";
 import { H256, Address } from "../types";
-import { sin, random } from "bindings/Math";
 import {u128} from "bignum";
 import { Notify } from "../notify";
 
