@@ -33,26 +33,3 @@ export class Address {
           return encode(this.value);
       }
   }
-  const ADDR_VERSION = '17';
-  const CHARS = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  const PREFIX: u8 = 23;
-  /**
-  * Encode Uint8Array in base58.
-  * @param bytes Byte array of type Uint8Array.
-  */
- function encode(val: Uint8Array): string {
-    let data = new Uint8Array(25);
-    data[0] = PREFIX;
-    for (let i = 0; i < val.length; ++i){
-        data[i+1] = val[i];
-    };
-    
-    return 'str';
-  }
-
-// function dhash256(data: D):Uint8Array {
-//     let mut hash = new Uint8Array(32);
-//     let dhash = Sha256::digest(&Sha256::digest(data.as_ref()));
-//     hash[..].copy_from_slice(&dhash);
-//     hash
-// }
