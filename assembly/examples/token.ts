@@ -76,23 +76,26 @@ function approve(owner:Address, spender:Address, amount:u128):bool {
     let key = get_approve_key(owner, spender);
     let sink = new Sink();
     sink.write_u128(amount);
+    (new Notify()).string(sink.val).string('approvekey:'+key).notify();
     database.put(key, sink.toUint8Array());
     let notify = new Notify();
     notify.string('approve').address(owner).address(spender).number(amount).notify();
     return true;
 }
+
 function allowance(owner:Address, spender:Address):u128{
     let key = get_approve_key(owner, spender);
     let res = database.get(key);
     let source = new Source(res);
     return source.read_u128();
 }
+
 function transfer_from(spender:Address,owner:Address,to:Address,amount:u128):bool {
-    if(!runtime_api.check_witness(spender)){
+    if(runtime_api.check_witness(spender) == false){
         return false;
     }
     let owner_bal = balanceOf(owner);
-    if(u128.cmp(amount, u128.Zero) <0||u128.cmp(owner_bal, amount) < 0){
+    if(u128.cmp(amount, u128.Zero) <0 || u128.cmp(owner_bal, amount) < 0){
         return false;
     }
     let approve_key = get_approve_key(owner, spender);
@@ -179,9 +182,9 @@ export function invoke():void {
 }
 
 function get_balance_key(addr:Address):string{
-    return BALANCE_PREFIX+util.bytesToHexString(addr.value.buffer);
+    return BALANCE_PREFIX+util.bytesToHexString(addr.value);
 }
 
 function get_approve_key(owner:Address, spender:Address):string {
-    return APPROVE_PREFIX+util.bytesToHexString(owner.value.buffer)+util.bytesToHexString(spender.value.buffer);
+    return APPROVE_PREFIX+util.bytesToHexString(owner.value)+util.bytesToHexString(spender.value);
 }

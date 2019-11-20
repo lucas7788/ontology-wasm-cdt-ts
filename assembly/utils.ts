@@ -19,15 +19,15 @@ export namespace util {
   }
 
   export function strToHexString(data: string): string {
-    let bytes = stringToArrayBuffer(data);
+    let bytes = stringToUint8Array(data);
     return bytesToHexString(bytes);
   }
 
-  export function bytesToHexString(bytes:ArrayBuffer):string {
+  export function bytesToHexString(bytes:Uint8Array):string {
     if (bytes.byteLength == 0) {
       return '00';
     }
-    let dataView:DataView = new DataView(bytes);
+    let dataView:DataView = new DataView(bytes.buffer);
     let res :string= '';
     for(let i=0;i<bytes.byteLength;i++){
       res += u8ToHexString(dataView.getUint8(i));

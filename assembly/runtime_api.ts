@@ -1,5 +1,6 @@
 import {H256,Address} from "./types";
 import { util } from "./utils";
+import { Notify } from "./notify";
 export declare namespace env{
 
      // #############
@@ -201,21 +202,18 @@ export namespace runtime_api {
     export function storage_read(key:Uint8Array):Uint8Array {
         const INITIAL: usize = 32;
         let val = new Uint8Array(INITIAL);
-        let size = env.ontio_storage_read(key.dataStart as u32, key.length,val.dataStart as u32,val.length as u32, 0);
+        let size = env.ontio_storage_read(key.dataStart as u32, key.byteLength,val.dataStart as u32,val.byteLength as u32, 0);
         if (size == u32.MAX_VALUE) {
             return new Uint8Array(0);
         }
         let size_val = size as usize;
-        debug('storage_read:'+size_val.toString());
         if (size_val > INITIAL) {
             let res = new Uint8Array(size_val-INITIAL);
             env.ontio_storage_read(key.dataStart as u32, key.length,res.dataStart as u32,res.length as u32, INITIAL as u32);
             return res;
         } else {
             let res = new Uint8Array(size_val);
-            for (let i=0;i<(size_val as i32);i++) {
-                res[i] = val[i];
-            }
+            memory.copy(res.dataStart,val.dataStart,size_val);
             return res;
         }
     }

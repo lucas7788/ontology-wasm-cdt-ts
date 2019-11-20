@@ -9,10 +9,10 @@ export class Sink {
     }
 
     write_byte(params:u8):void {
-        let buffer = new ArrayBuffer(1);
-        let dataView = new DataView(buffer);
+        let data = new Uint8Array(1);
+        let dataView = new DataView(data.buffer);
         dataView.setUint8(0,params);
-        this.val += util.bytesToHexString(buffer);
+        this.val += util.bytesToHexString(data);
     }
 
     write_bool(param:bool):void {
@@ -24,7 +24,7 @@ export class Sink {
     }
 
     write_bytes(params:Uint8Array) :void{
-        this.val += util.bytesToHexString(params.buffer);
+        this.val += util.bytesToHexString(params);
     }
 
     write_string(data:string):void {
@@ -39,10 +39,10 @@ export class Sink {
     }
     
     write_u64(data:u64) :void {
-        let buffer = new ArrayBuffer(8);
-        let dv = new DataView(buffer);
+        let u = new Uint8Array(8);
+        let dv = new DataView(u.buffer);
         dv.setUint64(0,data,true);
-        this.val += util.bytesToHexString(buffer);
+        this.val += util.bytesToHexString(u);
     }
 
     write_varuint(data:u64):void {
@@ -66,7 +66,7 @@ export class Sink {
     }
 
     write_address(addr:Address) :void {
-        this.val += util.bytesToHexString(addr.value.buffer);
+        this.val += util.bytesToHexString(addr.value);
     }
 
     write_native_address(addr:Address):void {
@@ -79,7 +79,7 @@ export class Sink {
     }
     write_u128(data:u128):void {
         let buffer = data.toUint8Array();
-        this.val += util.bytesToHexString(buffer.buffer);
+        this.val += util.bytesToHexString(buffer);
     }
 
     toUint8Array():Uint8Array {
