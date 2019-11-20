@@ -18,7 +18,7 @@ export class H256 {
 const ADDRESS_LEN = 20;
 export class Address {
     /**
-       * Base58 or Hex encoded address
+       * Hex encoded address
        */
       value: Uint8Array = new Uint8Array(ADDRESS_LEN);
   
