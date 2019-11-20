@@ -1,6 +1,6 @@
 {
   "name": "ontio-ts-cdt",
-  "version": "0.1.8",
+  "version": "0.1.0",
   "description": "ontology smart contract runtime library for typescript",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "ascMain": "assembly/index.ts",
   "scripts": {
-    "asbuild:optimized": "asc assembly/examples/token.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
+    "asbuild:optimized": "asc assembly/examples/helloworld.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
     "doc": "rm -rf apidoc && mkdir apidoc && node_modules/.bin/typedoc assembly/*.ts --theme markdown --ignoreCompilerErrors --excludePrivate --excludeProtected --excludeExternals --out apidoc/",
     "asbuild": "npm run asbuild:optimized",
     "test": "asp",
@@ -25,7 +25,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "assemblyscript": "^0.8.1",
     "assemblyscript-json": "^0.2.0",
     "bignum": "github:MaxGraey/bignum.wasm"
   },
