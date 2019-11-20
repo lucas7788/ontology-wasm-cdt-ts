@@ -75,15 +75,15 @@ export namespace native{
         sink.write_native_address(to);
         let amt = util.u128ToNeoUint8Array(amount);
         sink.write_varuint(amt.byteLength);
-        sink.write_bytes(amt.buffer);
+        sink.write_bytes(amt);
         let sink_param = new Sink();
         sink_param.write_byte(VERSION);
         sink_param.write_string('transferFrom');
         let temp = sink.toUint8Array();
         sink_param.write_varuint(temp.byteLength as u64);
-        sink_param.write_bytes(temp.buffer);
+        sink_param.write_bytes(temp);
         let res = runtime_api.call_contract(contract_addr, sink_param.toUint8Array());
-        let source = new Source(res.buffer);
+        let source = new Source(res);
         return source.readBool();
     }
     function allowance_inner(contract_addr:Address,from: Address, to: Address):u128{
@@ -95,7 +95,7 @@ export namespace native{
         sink_param.write_string('allowance');
         let temp = sink.toUint8Array();
         sink_param.write_varuint(temp.byteLength as u64);
-        sink_param.write_bytes(temp.buffer);
+        sink_param.write_bytes(temp);
         let res = runtime_api.call_contract(contract_addr,sink_param.toUint8Array());
         return util.u128FromNeoUint8Array(res);
     }
@@ -105,15 +105,15 @@ export namespace native{
         sink.write_native_address(to);
         let amt = util.u128ToNeoUint8Array(amount);
         sink.write_varuint(amt.byteLength);
-        sink.write_bytes(amt.buffer);
+        sink.write_bytes(amt);
         let sink_param = new Sink();
         sink_param.write_byte(VERSION);
         sink_param.write_string('approve');
         let temp = sink.toUint8Array();
         sink_param.write_varuint(temp.byteLength as u64);
-        sink_param.write_bytes(temp.buffer);
+        sink_param.write_bytes(temp);
         let res = runtime_api.call_contract(contract_addr, sink_param.toUint8Array());
-        let source = new Source(res.buffer);
+        let source = new Source(res);
         return source.readBool();
     }
     function balanceOf_inner(contract_addr:Address,addr:Address):u128 {
@@ -124,7 +124,7 @@ export namespace native{
         sink_param.write_string('balanceOf');
         let temp = sink.toUint8Array();
         sink_param.write_varuint(temp.byteLength as u64);
-        sink_param.write_bytes(temp.buffer);
+        sink_param.write_bytes(temp);
         let res = runtime_api.call_contract(contract_addr,sink_param.toUint8Array());
         return util.u128FromNeoUint8Array(res);
     }
@@ -137,16 +137,16 @@ export namespace native{
             sink.write_native_address(params[i].to);
             let amt = util.u128ToNeoUint8Array(params[i].amount);
             sink.write_varuint(amt.byteLength as u64);
-            sink.write_bytes(amt.buffer);
+            sink.write_bytes(amt);
         }
         let sink_param = new Sink();
         sink_param.write_byte(VERSION);
         sink_param.write_string('transfer');
         let temp = sink.toUint8Array();
         sink_param.write_varuint(temp.byteLength as u64);
-        sink_param.write_bytes(temp.buffer);
+        sink_param.write_bytes(temp);
         let res = runtime_api.call_contract(contract_addr,sink_param.toUint8Array());
-        let source = new Source(res.buffer);
+        let source = new Source(res);
         if (source.readBool()) {
             return true
         } else {

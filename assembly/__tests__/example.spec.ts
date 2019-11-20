@@ -9,15 +9,6 @@ import { Notify } from "../notify";
 describe("sink",()=>{
 
   it("address test", () => {
-    // let addr = decodeBase58('AbtTQJYKfQxq4UdygDsbLVjE8uRrJ2H3tP');
-    // log(addr);
-    // let buffer = util.hexStringToArrayBuffer('dca1305cc8fc2b3d3127a2c4849b43301545d84e');
-    // let addr = new Address(Uint8Array.wrap(buffer) as Uint8Array);
-    // log(addr.to_base58());
-    // //AbtTQJYKfQxq4UdygDsbLVjE8uRrJ2H3tP
-    // let buffer2 = util.hexStringToArrayBuffer('4ed8451530439b84c4a227313d2bfcc85c30a1dc');
-    // let addr2 = new Address(Uint8Array.wrap(buffer2) as Uint8Array);
-    // log(addr2.to_base58());
     let sink = new Sink();
     let addr = util.hexToAddress('dca1305cc8fc2b3d3127a2c4849b43301545d84e');
     sink.write_native_address(addr);
@@ -37,7 +28,7 @@ describe("sink",()=>{
     let h = new Uint8Array(32);
     h[0] = 1;
     h[1] = 1;
-    let h256 = new H256(h.buffer);
+    let h256 = new H256(h);
     notify.bool(true).string('test').address(addr).bytearray(bs).h256(h256).number(u128.fromI32(128)).notify();
   });
 
@@ -56,9 +47,9 @@ describe("sink",()=>{
     bs[0] = 254;
     bs[1] = 254;
     sink.write_varuint(bs.byteLength);
-    sink.write_bytes(bs.buffer);
+    sink.write_bytes(bs);
     expect<string>('03616263fe000000fe00fe01fe00000000000000fe000000000000000000000000000000000000000000000000000000000000000000000002fefe').toStrictEqual(sink.val);
-    let buffer = util.hexStringToArrayBuffer(sink.val);
+    let buffer = util.hexToUint8Array(sink.val);
     let source = new Source(buffer);
     expect<string>('abc').toStrictEqual(source.readString());
     expect<u32>(254).toStrictEqual(source.readUint32());
@@ -69,7 +60,7 @@ describe("sink",()=>{
     expect<u128>(u128.fromI32(254)).toStrictEqual(source.read_u128());
     expect<Uint8Array>(addr.value).toStrictEqual(source.read_address().value);
     expect<u64>(2).toStrictEqual(source.readVarUint());
-    expect<ArrayBuffer>(bs.buffer).toStrictEqual(source.readBytes(2));
+    expect<Uint8Array>(bs).toStrictEqual(source.readBytes(2));
   });
 
   it("should be 1", () => {

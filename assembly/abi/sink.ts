@@ -23,8 +23,8 @@ export class Sink {
         }
     }
 
-    write_bytes(params:ArrayBuffer) :void{
-        this.val += util.bytesToHexString(params);
+    write_bytes(params:Uint8Array) :void{
+        this.val += util.bytesToHexString(params.buffer);
     }
 
     write_string(data:string):void {
@@ -85,6 +85,9 @@ export class Sink {
     toUint8Array():Uint8Array {
         let buffer = util.hexStringToArrayBuffer(this.val);
         return Uint8Array.wrap(buffer) as Uint8Array;
+    }
+    reset():void{
+        this.val = '';
     }
 }
 

@@ -1,10 +1,13 @@
+import { util } from "./utils";
+import {} from 'bignum';
+
 const H256_LEN = 32;
 export class H256 {
     /**
      * Base58 or Hex encoded address
      */
-    value :ArrayBuffer = new ArrayBuffer(H256_LEN);
-    constructor(val: ArrayBuffer) {
+    value :Uint8Array = new Uint8Array(H256_LEN);
+    constructor(val: Uint8Array) {
         if (val.byteLength != 32) {
             throw new Error("param wrong");
         }
@@ -53,7 +56,3 @@ export class Address {
 //     hash[..].copy_from_slice(&dhash);
 //     hash
 // }
-//   export function decodeBase58(data:string):Address{
-    
-//     return new Address();
-//   }

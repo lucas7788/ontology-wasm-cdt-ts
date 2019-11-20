@@ -19,27 +19,27 @@ export class Notify {
     constructor() {
         this.sink = new Sink();
         this.numEntry = 0;
-        this.sink.write_bytes(util.stringToArrayBuffer('evt\0'));
+        this.sink.write_bytes(util.stringToUint8Array('evt\0'));
         this.sink.write_byte(TYPE_LIST);
         this.sink.write_u32(this.numEntry as u32);
     }
     string(val:string):Notify {
         this.sink.write_byte(TYPE_STRING);
         this.sink.write_u32(val.length as u32);
-        this.sink.write_bytes(util.stringToArrayBuffer(val));
+        this.sink.write_bytes(util.stringToUint8Array(val));
         this.numEntry += 1;
         return this;
     }
     bytearray(bs:Uint8Array):Notify{
         this.sink.write_byte(TYPE_BYTEARRAY);
         this.sink.write_u32(bs.length as u32);
-        this.sink.write_bytes(bs.buffer);
+        this.sink.write_bytes(bs);
         this.numEntry += 1;
         return this;
     }
     address(addr:Address):Notify{
         this.sink.write_byte(TYPE_ADDRESS);
-        this.sink.write_bytes(addr.value.buffer);
+        this.sink.write_bytes(addr.value);
         this.numEntry += 1;
         return this;
     }

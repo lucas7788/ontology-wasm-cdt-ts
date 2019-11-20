@@ -5,10 +5,10 @@ export class Source {
     dataView: DataView;
     pos: i32;
     size: i32;
-    constructor(buffer: ArrayBuffer){
-        this.dataView = new DataView(buffer);
+    constructor(data: Uint8Array){
+        this.dataView = new DataView(data.buffer);
         this.pos = 0;
-        this.size = buffer.byteLength;
+        this.size = data.byteLength;
     }
 
     /**
@@ -22,13 +22,13 @@ export class Source {
      * Reads some bytes.
      * @param {number} bytes - Number of bytes to read
      */
-    readBytes(bytes: u64):ArrayBuffer{
+    readBytes(bytes: u64):Uint8Array{
         if (this.isEmpty()) {
             throw new Error('StringReader reached the end.');
         }
         let res = this.dataView.buffer.slice(this.pos,this.pos+bytes as i32)
         this.pos += bytes as i32;
-        return res;
+        return Uint8Array.wrap(res);
     }
 
     readByte():u8 {
@@ -38,10 +38,10 @@ export class Source {
     /**
      * First, read one byte as the length of bytes to read. Then read the following bytes.
      */
-    readVarBytes():ArrayBuffer {
+    readVarBytes():Uint8Array {
         let bytesToRead = this.readVarUint();
         if (bytesToRead === 0) {
-            return new ArrayBuffer(0);
+            return new Uint8Array(0);
         }
         return this.readBytes(bytesToRead);
     }
@@ -115,7 +115,7 @@ export class Source {
 
     read_address() :Address {
         let buffer = this.readBytes(20);
-        return new Address(Uint8Array.wrap(buffer) as Uint8Array);
+        return new Address(buffer);
     }
 
     read_h256() :H256 {
@@ -124,8 +124,10 @@ export class Source {
     }
 
     read_u128():u128 {
+        if (this.dataView.byteLength == 0){
+            return u128.fromU32(0);
+        }
         let buffer = this.readBytes(16);
-        let u = Uint8Array.wrap(buffer);
-        return u128.fromUint8ArrayLE(u as Uint8Array);
+        return u128.fromUint8ArrayLE(buffer);
     }
 }

@@ -4,7 +4,7 @@ import {Sink} from "../abi/sink";
 
 export function invoke():void {
     let data = runtime_api.input();
-    let reader = new Source(data.buffer);
+    let reader = new Source(data);
     let method = reader.readString();
     let sink = new Sink();
     if (method == "timestamp") {

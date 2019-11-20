@@ -10,10 +10,10 @@
   "types": "dist/index.d.ts",
   "ascMain": "assembly/index.ts",
   "scripts": {
-    "asbuild:optimized": "asc assembly/examples/ont_test.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
+    "asbuild:optimized": "asc assembly/examples/token.ts -b build/optimized.wasm -t build/optimized.wat --validate --optimize --use abort=",
     "doc": "rm -rf apidoc && mkdir apidoc && node_modules/.bin/typedoc assembly/*.ts --theme markdown --ignoreCompilerErrors --excludePrivate --excludeProtected --excludeExternals --out apidoc/",
     "asbuild": "npm run asbuild:optimized",
-    "test": "./node_modules/mocha/bin/mocha --reporter spec --require ts-node/register assembly/test/*.test.ts",
+    "test": "asp",
     "release": "asc && npm publish"
   },
   "keywords": [
@@ -27,7 +27,6 @@
   "dependencies": {
     "assemblyscript": "^0.8.1",
     "assemblyscript-json": "^0.2.0",
-    "base-58": "^0.0.1",
     "bignum": "github:MaxGraey/bignum.wasm"
   },
   "devDependencies": {

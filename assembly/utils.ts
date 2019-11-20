@@ -58,6 +58,10 @@ export namespace util {
     return buffer;
   }
 
+  export function hexToUint8Array(data:string):Uint8Array {
+    return Uint8Array.wrap(hexStringToArrayBuffer(data));
+  }
+
   export function u16ToHexString(u:u16):string{
     let buffer:ArrayBuffer = new ArrayBuffer(2);
     let d:DataView = new DataView(buffer);
@@ -142,11 +146,11 @@ export namespace util {
     }
     return res;
   }
-  export function bytesToString(bytes: ArrayBuffer): string {
+  export function bytesToString(bytes: Uint8Array): string {
     if (bytes == null) {
       return '';
     }
-    return String.UTF8.decode(bytes, true)
+    return String.UTF8.decode(bytes.buffer, true)
   }
   
   export function UTF8Length(str: string, nullTerminated: boolean = false): usize {

@@ -248,23 +248,23 @@ export namespace runtime_api {
     export function current_block_hash():H256 {
         let res = new Uint8Array(32);
         env.ontio_current_blockhash(res.dataStart as u32);
-        return new H256(res.buffer);
+        return new H256(res);
     }
     
     export function current_tx_hash():H256 {
         let res = new Uint8Array(32);
         env.ontio_current_txhash(res.dataStart as u32);
-        return new H256(res.buffer);
+        return new H256(res);
     }
     
     export function sha256(data: Uint8Array) :H256 {
         let res = new Uint8Array(32);
         env.ontio_sha256(data.dataStart as u32, data.length, res.dataStart as u32);
-        return new H256(res.buffer);
+        return new H256(res);
     }
     
     export function check_witness(addr: Address) :bool {
-        return env.ontio_check_witness(addr.value.dataStart as u32) == 0;
+        return env.ontio_check_witness(addr.value.dataStart as u32) == 1;
     }
     
     export function input(): Uint8Array{
