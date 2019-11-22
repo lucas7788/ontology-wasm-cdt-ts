@@ -19,7 +19,7 @@ npx asinit helloworld
 "dependencies": {
     "assemblyscript-json": "^0.2.0",
     "bignum": "github:MaxGraey/bignum.wasm",
-    "ontio-ts-cdt": "^0.1.8"
+    "ontio-ts-cdt": "^0.1.9"
   },
 ```
 
